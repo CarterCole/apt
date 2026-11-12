@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>apt.cartercole.net</title>
+<meta name="description" content="An apt repository for Carter Cole's tools: add it once, then apt install and apt upgrade them.">
+<style>
+  :root {
+    --bg: #fbfbf9; --fg: #1d1d1b; --muted: #6b6b66; --line: #e3e2dc;
+    --code-bg: #f1f0ea; --accent: #2f5d9e;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161615; --fg: #e8e7e1; --muted: #9b9a93; --line: #2e2e2b;
+      --code-bg: #20201e; --accent: #8db3ea;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  main { max-width: 46rem; margin: 0 auto; padding: 3rem 1rem 4rem; }
+  h1 { font-size: 1.6rem; margin: 0 0 .25rem; letter-spacing: -.01em; }
+  h2 { font-size: 1.05rem; margin: 2.25rem 0 .5rem; }
+  p { margin: .5rem 0; }
+  .lede { color: var(--muted); margin-bottom: 1.5rem; }
+  a { color: var(--accent); }
+  pre, code { font: 13.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  pre {
+    background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px;
+    padding: .75rem 1rem; overflow-x: auto; margin: .5rem 0;
+  }
+  code { background: var(--code-bg); padding: .05rem .3rem; border-radius: 4px; }
+  pre code { background: none; padding: 0; }
+  .table { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+  th, td { text-align: left; padding: .45rem .75rem .45rem 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-weight: 600; color: var(--muted); font-size: .85rem; }
+  td:first-child { font-weight: 600; white-space: nowrap; }
+  td:nth-child(2), td:nth-child(3) { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .fpr { word-break: break-all; }
+  footer { margin-top: 3rem; color: var(--muted); font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>apt.cartercole.net</h1>
+  <p class="lede">An apt repository for the tools at
+    <a href="https://github.com/CarterCole">github.com/CarterCole</a>.
+    Add it once; after that they install and upgrade like any other package.</p>
+
+  <h2>Add the repository</h2>
+  <p>On Debian 12 or newer, or Ubuntu 22.04 or newer. This one file holds the
+    repository and its signing key:</p>
+<pre><code>sudo curl -fsSLo /etc/apt/sources.list.d/cartercole.sources https://apt.cartercole.net/cartercole.sources
+sudo apt update</code></pre>
+
+  <h2>Install</h2>
+  <p>Any of the packages below, by name:</p>
+<pre><code>sudo apt install bond kith</code></pre>
+  <p><code>sudo apt upgrade</code> picks up new releases. To remove the repository,
+    delete <code>/etc/apt/sources.list.d/cartercole.sources</code>.</p>
+
+  <h2>Packages</h2>
+  <div class="table">
+  <table>
+    <thead><tr><th>Package</th><th>Version</th><th>Architectures</th><th>Description</th></tr></thead>
+    <tbody>
+<!-- packages -->
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Signing key</h2>
+  <p>The indexes are signed by <a href="key.asc">key.asc</a>, fingerprint
+    <code class="fpr">{{fingerprint}}</code>.</p>
+
+  <footer>Built from <a href="https://github.com/CarterCole/apt">CarterCole/apt</a>
+    out of each project's GitHub releases.</footer>
+</main>
+</body>
+</html>

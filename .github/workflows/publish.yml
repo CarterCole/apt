@@ -1,0 +1,62 @@
+# Rebuild apt.cartercole.net from the .debs on each listed project's GitHub
+# releases, test it, and deploy it to GitHub Pages.
+#
+# A project's release workflow starts this by pushing a change to its file in
+# projects/ (with a deploy key that can write to this repository). Run it by
+# hand from the Actions tab after editing anything else.
+#
+# Needs a repository secret APT_SIGNING_KEY: the ASCII-armoured secret half of
+# key.asc, without a passphrase.
+name: publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One deploy at a time, and never cancel one halfway.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+
+      - name: Tools
+        run: command -v apt-ftparchive >/dev/null || sudo apt-get install -y --no-install-recommends apt-utils
+
+      - name: Import the signing key
+        env:
+          APT_SIGNING_KEY: ${{ secrets.APT_SIGNING_KEY }}
+        run: printf '%s\n' "$APT_SIGNING_KEY" | gpg --batch --import
+
+      - name: Build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./build.sh site
+
+      - name: Install every package on Debian and Ubuntu
+        run: ./test.sh site
+
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
